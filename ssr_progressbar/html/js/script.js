@@ -7,6 +7,7 @@ $('document').ready(function() {
     const $container = $('.progress-container');
     const $root = $('#seg-progress');
     const $label = $('#progress-label');
+    const $actionLabel = $('#action-label');
     const $segments = $('#progress-segments .segment');
     const totalSegments = $segments.length;
     let currentState = 'idle';
@@ -83,6 +84,20 @@ $('document').ready(function() {
         }
     }
 
+
+    function updateActionLabel(text) {
+        const labelText = text && text.trim ? text.trim() : '';
+
+        if (labelText.length > 0) {
+            $actionLabel.text(labelText);
+            $actionLabel.show();
+            return;
+        }
+
+        $actionLabel.text('');
+        $actionLabel.hide();
+    }
+
     function updateProgress(percentValue) {
         const safePercent = Math.max(0, Math.min(100, percentValue));
         const filledCount = Math.max(0, Math.min(totalSegments, Math.ceil((safePercent / 100) * totalSegments)));
@@ -115,6 +130,7 @@ $('document').ready(function() {
         clearTimeout(cancelledTimer);
         stopProgressAnimation();
         applyColorConfig(data.colors);
+        updateActionLabel(data.label || "");
         currentState = 'idle';
         lastLabel = '';
         lastFilledCount = -1;
@@ -142,6 +158,7 @@ $('document').ready(function() {
 
                 setTimeout(function() {
                     $container.fadeOut('fast', function() {
+                        updateActionLabel('');
                         $.post('https://ssr_progressbar/actionFinish', JSON.stringify({}));
                     });
                 }, 320);
@@ -164,6 +181,7 @@ $('document').ready(function() {
                 lastFilledCount = -1;
                 lastActiveIndex = -1;
                 updateProgress(0);
+                updateActionLabel('');
                 $.post('https://ssr_progressbar/actionCancel', JSON.stringify({}));
             });
         }, 850);
@@ -171,6 +189,7 @@ $('document').ready(function() {
 
     MythicProgBar.CloseUI = function() {
         stopProgressAnimation();
+        updateActionLabel('');
         $container.fadeOut('fast');
     };
 
