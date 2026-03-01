@@ -1,0 +1,98 @@
+html {
+    overflow: hidden;
+}
+
+body {
+    background: transparent !important;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    font-family: 'Kanit', sans-serif;
+}
+
+.progress-container {
+    display: none;
+    z-index: 5;
+    position: fixed;
+    bottom: 12.65%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+
+.seg-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    background: rgba(7, 11, 18, 0.97);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+}
+
+.progress-label {
+    min-width: 34px;
+    color: #f2f5f8;
+    font-size: 12px;
+    line-height: 1;
+    text-align: right;
+}
+
+.progress-segments {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.segment {
+    width: 21px;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(235, 241, 255, 0.42);
+    transition: background-color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.segment.filled {
+    background: #18a4ff;
+}
+
+.segment.active {
+    transform: scale(1.08);
+    box-shadow: 0 0 6px rgba(24, 164, 255, 0.45);
+}
+
+.seg-progress.is-cancelled .progress-label {
+    color: #ff6b6b;
+}
+
+.seg-progress.is-cancelled .segment.filled,
+.seg-progress.is-cancelled .segment.active {
+    background: #ff2f48;
+    box-shadow: 0 0 6px rgba(255, 47, 72, 0.45);
+}
+
+.seg-progress.is-complete .segment.filled {
+    animation: completePulse 0.55s ease-in-out 2;
+}
+
+@keyframes completePulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(24, 164, 255, 0.0);
+    }
+
+    50% {
+        transform: scale(1.12);
+        box-shadow: 0 0 8px rgba(24, 164, 255, 0.55);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(24, 164, 255, 0.0);
+    }
+}
