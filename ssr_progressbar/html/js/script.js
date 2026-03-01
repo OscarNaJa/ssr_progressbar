@@ -7,6 +7,7 @@ $('document').ready(function() {
     const $container = $('.progress-container');
     const $root = $('#seg-progress');
     const $label = $('#progress-label');
+    const $actionLabel = $('#action-label');
     const $segments = $('#progress-segments .segment');
     const totalSegments = $segments.length;
     let currentState = 'idle';
@@ -43,6 +44,70 @@ $('document').ready(function() {
         }
     }
 
+
+    function applyColorConfig(colors) {
+        const rootStyle = document.documentElement.style;
+        const progressBarColor = colors && colors.progressBar ? colors.progressBar : '#18a4ff';
+        const percentTextColor = colors && colors.percentText ? colors.percentText : '#f2f5f8';
+        const boxBackgroundColor = colors && colors.boxBackground ? colors.boxBackground : 'rgba(7, 11, 18, 0.97)';
+        const boxBorderColor = colors && colors.boxBorder ? colors.boxBorder : 'rgba(255, 255, 255, 0.08)';
+        const boxInnerBorderColor = colors && colors.boxInnerBorder ? colors.boxInnerBorder : 'rgba(255, 255, 255, 0.03)';
+        const segmentEmptyColor = colors && colors.segmentEmpty ? colors.segmentEmpty : 'rgba(235, 241, 255, 0.42)';
+        const actionLabelColor = colors && colors.actionLabel ? colors.actionLabel : '#f2f5f8';
+
+        rootStyle.setProperty('--progress-filled-color', progressBarColor);
+        rootStyle.setProperty('--progress-active-glow', progressBarColor);
+        rootStyle.setProperty('--progress-percent-color', percentTextColor);
+        rootStyle.setProperty('--progress-box-background', boxBackgroundColor);
+        rootStyle.setProperty('--progress-box-border', boxBorderColor);
+        rootStyle.setProperty('--progress-box-inner-border', boxInnerBorderColor);
+        rootStyle.setProperty('--progress-segment-empty', segmentEmptyColor);
+        rootStyle.setProperty('--progress-action-label-color', actionLabelColor);
+    }
+
+
+    function playSound(path, volume) {
+        if (!path) {
+            return;
+        }
+
+        const normalizedVolume = Math.max(0, Math.min(1, Number.isFinite(volume) ? volume : 0.35));
+        const audio = new Audio(path);
+        audio.volume = normalizedVolume;
+        audio.play().catch(function() {
+            // Ignore audio errors (e.g., missing file) to avoid breaking UI.
+        });
+    }
+
+    function playProgressSound(sounds, type) {
+        if (!sounds || !sounds.enabled) {
+            return;
+        }
+
+        if (type === 'complete') {
+            playSound(sounds.completeMp3, sounds.volume);
+            return;
+        }
+
+        if (type === 'cancel') {
+            playSound(sounds.cancelMp3, sounds.volume);
+        }
+    }
+
+
+    function updateActionLabel(text) {
+        const labelText = text && text.trim ? text.trim() : '';
+
+        if (labelText.length > 0) {
+            $actionLabel.text(labelText);
+            $actionLabel.show();
+            return;
+        }
+
+        $actionLabel.text('');
+        $actionLabel.hide();
+    }
+
     function updateProgress(percentValue) {
         const safePercent = Math.max(0, Math.min(100, percentValue));
         const filledCount = Math.max(0, Math.min(totalSegments, Math.ceil((safePercent / 100) * totalSegments)));
@@ -71,8 +136,11 @@ $('document').ready(function() {
     }
 
     MythicProgBar.Progress = function(data) {
+        const sounds = data.sounds || null;
         clearTimeout(cancelledTimer);
         stopProgressAnimation();
+        applyColorConfig(data.colors);
+        updateActionLabel(data.label || "");
         currentState = 'idle';
         lastLabel = '';
         lastFilledCount = -1;
@@ -95,11 +163,13 @@ $('document').ready(function() {
 
                 updateProgress(100);
                 setState('complete');
+                playProgressSound(sounds, 'complete');
                 stopProgressAnimation();
 
                 setTimeout(function() {
                     $container.fadeOut('fast', function() {
-                        $.post('https://mythic_progbar/actionFinish', JSON.stringify({}));
+                        updateActionLabel('');
+                        $.post('https://ssr_progressbar/actionFinish', JSON.stringify({}));
                     });
                 }, 320);
             }
@@ -108,8 +178,10 @@ $('document').ready(function() {
         });
     };
 
-    MythicProgBar.ProgressCancel = function() {
+    MythicProgBar.ProgressCancel = function(data) {
+        const sounds = data && data.sounds ? data.sounds : null;
         stopProgressAnimation();
+        playProgressSound(sounds, 'cancel');
         setState('cancelled');
 
         cancelledTimer = setTimeout(function () {
@@ -119,13 +191,15 @@ $('document').ready(function() {
                 lastFilledCount = -1;
                 lastActiveIndex = -1;
                 updateProgress(0);
-                $.post('https://mythic_progbar/actionCancel', JSON.stringify({}));
+                updateActionLabel('');
+                $.post('https://ssr_progressbar/actionCancel', JSON.stringify({}));
             });
         }, 850);
     };
 
     MythicProgBar.CloseUI = function() {
         stopProgressAnimation();
+        updateActionLabel('');
         $container.fadeOut('fast');
     };
 
@@ -135,7 +209,7 @@ $('document').ready(function() {
                 MythicProgBar.Progress(event.data);
                 break;
             case 'mythic_progress_cancel':
-                MythicProgBar.ProgressCancel();
+                MythicProgBar.ProgressCancel(event.data);
                 break;
         }
     });
