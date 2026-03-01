@@ -90,6 +90,12 @@ function Process(action, start, tick, finish)
                 colors = {
                     progressBar = (Config and Config.Colors and Config.Colors.progressBar) or nil,
                     percentText = (Config and Config.Colors and Config.Colors.percentText) or nil
+                },
+                sounds = {
+                    enabled = (Config and Config.Sounds and Config.Sounds.enabled) or false,
+                    completeMp3 = (Config and Config.Sounds and Config.Sounds.completeMp3) or nil,
+                    cancelMp3 = (Config and Config.Sounds and Config.Sounds.cancelMp3) or nil,
+                    volume = (Config and Config.Sounds and Config.Sounds.volume) or 0.35
                 }
             })
 
@@ -260,7 +266,13 @@ function Cancel()
     ActionCleanup()
 
     SendNUIMessage({
-        action = "mythic_progress_cancel"
+        action = "mythic_progress_cancel",
+        sounds = {
+            enabled = (Config and Config.Sounds and Config.Sounds.enabled) or false,
+            completeMp3 = (Config and Config.Sounds and Config.Sounds.completeMp3) or nil,
+            cancelMp3 = (Config and Config.Sounds and Config.Sounds.cancelMp3) or nil,
+            volume = (Config and Config.Sounds and Config.Sounds.volume) or 0.35
+        }
     })
 end
 

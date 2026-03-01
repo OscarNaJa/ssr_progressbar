@@ -54,6 +54,35 @@ $('document').ready(function() {
         rootStyle.setProperty('--progress-percent-color', percentTextColor);
     }
 
+
+    function playSound(path, volume) {
+        if (!path) {
+            return;
+        }
+
+        const normalizedVolume = Math.max(0, Math.min(1, Number.isFinite(volume) ? volume : 0.35));
+        const audio = new Audio(path);
+        audio.volume = normalizedVolume;
+        audio.play().catch(function() {
+            // Ignore audio errors (e.g., missing file) to avoid breaking UI.
+        });
+    }
+
+    function playProgressSound(sounds, type) {
+        if (!sounds || !sounds.enabled) {
+            return;
+        }
+
+        if (type === 'complete') {
+            playSound(sounds.completeMp3, sounds.volume);
+            return;
+        }
+
+        if (type === 'cancel') {
+            playSound(sounds.cancelMp3, sounds.volume);
+        }
+    }
+
     function updateProgress(percentValue) {
         const safePercent = Math.max(0, Math.min(100, percentValue));
         const filledCount = Math.max(0, Math.min(totalSegments, Math.ceil((safePercent / 100) * totalSegments)));
@@ -82,6 +111,7 @@ $('document').ready(function() {
     }
 
     MythicProgBar.Progress = function(data) {
+        const sounds = data.sounds || null;
         clearTimeout(cancelledTimer);
         stopProgressAnimation();
         applyColorConfig(data.colors);
@@ -107,6 +137,7 @@ $('document').ready(function() {
 
                 updateProgress(100);
                 setState('complete');
+                playProgressSound(sounds, 'complete');
                 stopProgressAnimation();
 
                 setTimeout(function() {
@@ -120,8 +151,10 @@ $('document').ready(function() {
         });
     };
 
-    MythicProgBar.ProgressCancel = function() {
+    MythicProgBar.ProgressCancel = function(data) {
+        const sounds = data && data.sounds ? data.sounds : null;
         stopProgressAnimation();
+        playProgressSound(sounds, 'cancel');
         setState('cancelled');
 
         cancelledTimer = setTimeout(function () {
@@ -147,7 +180,7 @@ $('document').ready(function() {
                 MythicProgBar.Progress(event.data);
                 break;
             case 'mythic_progress_cancel':
-                MythicProgBar.ProgressCancel();
+                MythicProgBar.ProgressCancel(event.data);
                 break;
         }
     });

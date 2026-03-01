@@ -21,6 +21,7 @@ files {
 
     'html/css/bootstrap.min.css',
     'html/js/jquery.min.js',
+    'html/sounds/*.mp3',
 }
 
 exports {
