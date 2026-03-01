@@ -43,6 +43,17 @@ $('document').ready(function() {
         }
     }
 
+
+    function applyColorConfig(colors) {
+        const rootStyle = document.documentElement.style;
+        const progressBarColor = colors && colors.progressBar ? colors.progressBar : '#18a4ff';
+        const percentTextColor = colors && colors.percentText ? colors.percentText : '#f2f5f8';
+
+        rootStyle.setProperty('--progress-filled-color', progressBarColor);
+        rootStyle.setProperty('--progress-active-glow', progressBarColor);
+        rootStyle.setProperty('--progress-percent-color', percentTextColor);
+    }
+
     function updateProgress(percentValue) {
         const safePercent = Math.max(0, Math.min(100, percentValue));
         const filledCount = Math.max(0, Math.min(totalSegments, Math.ceil((safePercent / 100) * totalSegments)));
@@ -73,6 +84,7 @@ $('document').ready(function() {
     MythicProgBar.Progress = function(data) {
         clearTimeout(cancelledTimer);
         stopProgressAnimation();
+        applyColorConfig(data.colors);
         currentState = 'idle';
         lastLabel = '';
         lastFilledCount = -1;
@@ -99,7 +111,7 @@ $('document').ready(function() {
 
                 setTimeout(function() {
                     $container.fadeOut('fast', function() {
-                        $.post('https://mythic_progbar/actionFinish', JSON.stringify({}));
+                        $.post('https://ssr_progressbar/actionFinish', JSON.stringify({}));
                     });
                 }, 320);
             }
@@ -119,7 +131,7 @@ $('document').ready(function() {
                 lastFilledCount = -1;
                 lastActiveIndex = -1;
                 updateProgress(0);
-                $.post('https://mythic_progbar/actionCancel', JSON.stringify({}));
+                $.post('https://ssr_progressbar/actionCancel', JSON.stringify({}));
             });
         }, 850);
     };

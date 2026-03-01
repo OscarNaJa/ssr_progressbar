@@ -1,11 +1,13 @@
 fx_version 'cerulean'
 game 'gta5'
 
-name 'Mythic Framework Progress Bar Modifier by TaerAttO'
+name 'ssr_progressbar'
 author 'Alzar - https://github.com/Alzar => modified by M. TaerAttO - https://github.com/MonsterTaerAttO/mythic_progbar'
-version '1.0.1'
+version '1.1.0'
 
 ui_page('html/index.html')
+
+shared_script 'config.lua'
 
 client_scripts {
     'client/functions.lua',

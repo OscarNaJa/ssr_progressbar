@@ -1,3 +1,9 @@
+:root {
+    --progress-filled-color: #18a4ff;
+    --progress-active-glow: #18a4ff;
+    --progress-percent-color: #f2f5f8;
+}
+
 html {
     overflow: hidden;
 }
@@ -37,7 +43,7 @@ body {
 
 .progress-label {
     min-width: 34px;
-    color: #f2f5f8;
+    color: var(--progress-percent-color);
     font-size: 12px;
     line-height: 1;
     text-align: right;
@@ -58,12 +64,12 @@ body {
 }
 
 .segment.filled {
-    background: #18a4ff;
+    background: var(--progress-filled-color);
 }
 
 .segment.active {
     transform: scale(1.08);
-    box-shadow: 0 0 6px rgba(24, 164, 255, 0.45);
+    box-shadow: 0 0 6px var(--progress-active-glow);
 }
 
 .seg-progress.is-cancelled .progress-label {

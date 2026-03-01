@@ -86,7 +86,11 @@ function Process(action, start, tick, finish)
             SendNUIMessage({
                 action = "mythic_progress",
                 duration = mythic_action.duration,
-                label = mythic_action.label
+                label = mythic_action.label,
+                colors = {
+                    progressBar = (Config and Config.Colors and Config.Colors.progressBar) or nil,
+                    percentText = (Config and Config.Colors and Config.Colors.percentText) or nil
+                }
             })
 
             createThread(function ()
@@ -111,7 +115,7 @@ function Process(action, start, tick, finish)
                     end
 
                     if mythic_action.canCancel and isControlJustPressed(0, 178) then
-                        TriggerEvent("mythic_progbar:client:cancel")
+                        TriggerEvent("ssr_progressbar:client:cancel")
                         break
                     end
 
@@ -120,7 +124,7 @@ function Process(action, start, tick, finish)
                         if deathCheckTimer >= 150 then
                             deathCheckTimer = 0
                             if isEntityDead(playerPedId()) then
-                                TriggerEvent("mythic_progbar:client:cancel")
+                                TriggerEvent("ssr_progressbar:client:cancel")
                                 break
                             end
                         end
@@ -132,10 +136,10 @@ function Process(action, start, tick, finish)
                 end
             end)
         else
-            exports['mythic_notify']:SendAlert('error', 'Already Doing An Action', 1000)
+            print('[ssr_progressbar] Already Doing An Action')
         end
     else
-        exports['mythic_notify']:SendAlert('error', 'Cannot Perform An Action While Dead', 1000)
+        print('[ssr_progressbar] Cannot Perform An Action While Dead')
     end
 end
 
