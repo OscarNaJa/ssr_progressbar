@@ -27,32 +27,34 @@ RegisterNUICallback('actionFinish', function(data, cb)
 	Finish()
 end)
 
-RegisterCommand('testprogbar', function()
-	Process({
-		name = 'ui_test',
-		duration = 7000,
-		label = '',
-		useWhileDead = true,
-		canCancel = true,
-		disarm = false,
-		controlDisables = {
-			disableMovement = false,
-			disableCarMovement = false,
-			disableMouse = false,
-			disableCombat = false,
-		},
-		animation = {},
-		prop = {},
-		propTwo = {},
-	}, function(cancelled)
-		if cancelled then
-			print('[ssr_progressbar] test cancelled')
-		else
-			print('[ssr_progressbar] test finished')
-		end
-	end)
-end, false)
+if Config and Config.Test and Config.Test.enableCommands then
+	RegisterCommand('testprogbar', function()
+		Process({
+			name = 'ui_test',
+			duration = 7000,
+			label = '',
+			useWhileDead = true,
+			canCancel = true,
+			disarm = false,
+			controlDisables = {
+				disableMovement = false,
+				disableCarMovement = false,
+				disableMouse = false,
+				disableCombat = false,
+			},
+			animation = {},
+			prop = {},
+			propTwo = {},
+		}, function(cancelled)
+			if cancelled then
+				print('[ssr_progressbar] test cancelled')
+			else
+				print('[ssr_progressbar] test finished')
+			end
+		end)
+	end, false)
 
-RegisterCommand('cancelprogbar', function()
-	TriggerEvent('ssr_progressbar:client:cancel')
-end, false)
+	RegisterCommand('cancelprogbar', function()
+		TriggerEvent('ssr_progressbar:client:cancel')
+	end, false)
+end
