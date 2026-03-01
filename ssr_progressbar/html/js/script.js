@@ -49,10 +49,20 @@ $('document').ready(function() {
         const rootStyle = document.documentElement.style;
         const progressBarColor = colors && colors.progressBar ? colors.progressBar : '#18a4ff';
         const percentTextColor = colors && colors.percentText ? colors.percentText : '#f2f5f8';
+        const boxBackgroundColor = colors && colors.boxBackground ? colors.boxBackground : 'rgba(7, 11, 18, 0.97)';
+        const boxBorderColor = colors && colors.boxBorder ? colors.boxBorder : 'rgba(255, 255, 255, 0.08)';
+        const boxInnerBorderColor = colors && colors.boxInnerBorder ? colors.boxInnerBorder : 'rgba(255, 255, 255, 0.03)';
+        const segmentEmptyColor = colors && colors.segmentEmpty ? colors.segmentEmpty : 'rgba(235, 241, 255, 0.42)';
+        const actionLabelColor = colors && colors.actionLabel ? colors.actionLabel : '#f2f5f8';
 
         rootStyle.setProperty('--progress-filled-color', progressBarColor);
         rootStyle.setProperty('--progress-active-glow', progressBarColor);
         rootStyle.setProperty('--progress-percent-color', percentTextColor);
+        rootStyle.setProperty('--progress-box-background', boxBackgroundColor);
+        rootStyle.setProperty('--progress-box-border', boxBorderColor);
+        rootStyle.setProperty('--progress-box-inner-border', boxInnerBorderColor);
+        rootStyle.setProperty('--progress-segment-empty', segmentEmptyColor);
+        rootStyle.setProperty('--progress-action-label-color', actionLabelColor);
     }
 
 

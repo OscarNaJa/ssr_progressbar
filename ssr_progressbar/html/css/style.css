@@ -2,6 +2,11 @@
     --progress-filled-color: #18a4ff;
     --progress-active-glow: #18a4ff;
     --progress-percent-color: #f2f5f8;
+    --progress-box-background: rgba(7, 11, 18, 0.97);
+    --progress-box-border: rgba(255, 255, 255, 0.08);
+    --progress-box-inner-border: rgba(255, 255, 255, 0.03);
+    --progress-segment-empty: rgba(235, 241, 255, 0.42);
+    --progress-action-label-color: #f2f5f8;
 }
 
 html {
@@ -30,12 +35,11 @@ body {
     width: fit-content;
 }
 
-
 .action-label {
     display: none;
     margin-bottom: 6px;
     text-align: center;
-    color: #f2f5f8;
+    color: var(--progress-action-label-color);
     font-size: 13px;
     line-height: 1.2;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
@@ -47,9 +51,9 @@ body {
     gap: 8px;
     padding: 7px 10px;
     border-radius: 6px;
-    background: rgba(7, 11, 18, 0.97);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+    background: var(--progress-box-background);
+    border: 1px solid var(--progress-box-border);
+    box-shadow: 0 0 0 1px var(--progress-box-inner-border) inset;
 }
 
 .progress-label {
@@ -70,7 +74,7 @@ body {
     width: 21px;
     height: 6px;
     border-radius: 999px;
-    background: rgba(235, 241, 255, 0.42);
+    background: var(--progress-segment-empty);
     transition: background-color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease;
 }
 

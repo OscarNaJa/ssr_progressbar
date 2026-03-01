@@ -9,6 +9,8 @@ ui_page('html/index.html')
 
 shared_script 'config.lua'
 
+server_script 'server.lua'
+
 client_scripts {
     'client/functions.lua',
     'client/events.lua',

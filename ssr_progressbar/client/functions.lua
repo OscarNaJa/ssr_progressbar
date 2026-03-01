@@ -89,7 +89,12 @@ function Process(action, start, tick, finish)
                 label = mythic_action.label,
                 colors = {
                     progressBar = (Config and Config.Colors and Config.Colors.progressBar) or nil,
-                    percentText = (Config and Config.Colors and Config.Colors.percentText) or nil
+                    percentText = (Config and Config.Colors and Config.Colors.percentText) or nil,
+                    boxBackground = (Config and Config.Colors and Config.Colors.boxBackground) or nil,
+                    boxBorder = (Config and Config.Colors and Config.Colors.boxBorder) or nil,
+                    boxInnerBorder = (Config and Config.Colors and Config.Colors.boxInnerBorder) or nil,
+                    segmentEmpty = (Config and Config.Colors and Config.Colors.segmentEmpty) or nil,
+                    actionLabel = (Config and Config.Colors and Config.Colors.actionLabel) or nil
                 },
                 sounds = {
                     enabled = (Config and Config.Sounds and Config.Sounds.enabled) or false,
@@ -98,6 +103,8 @@ function Process(action, start, tick, finish)
                     volume = (Config and Config.Sounds and Config.Sounds.volume) or 0.35
                 }
             })
+
+            TriggerServerEvent("ssr_progressbar:server:start", mythic_action.name, mythic_action.duration)
 
             createThread(function ()
                 if start ~= nil then
@@ -265,6 +272,8 @@ function Cancel()
 
     ActionCleanup()
 
+    TriggerServerEvent("ssr_progressbar:server:cancel")
+
     SendNUIMessage({
         action = "mythic_progress_cancel",
         sounds = {
@@ -279,6 +288,8 @@ end
 function Finish()
     isDoingAction = false
     ActionCleanup()
+
+    TriggerServerEvent("ssr_progressbar:server:finish")
 end
 
 function ActionCleanup()

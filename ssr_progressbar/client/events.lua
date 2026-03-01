@@ -25,6 +25,7 @@ end)
 
 RegisterNUICallback('actionFinish', function(data, cb)
 	Finish()
+	cb({})
 end)
 
 if Config and Config.Test and Config.Test.enableCommands then
