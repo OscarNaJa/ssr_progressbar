@@ -2,7 +2,7 @@ fx_version 'cerulean'
 game 'gta5'
 
 name 'ssr_progressbar'
-author 'Alzar - https://github.com/Alzar => modified by M. TaerAttO - https://github.com/MonsterTaerAttO/mythic_progbar'
+author 'Alzar - https://github.com/Alzar => modified by M. TaerAttO - https://github.com/MonsterTaerAttO/ssr_progressbar'
 version '1.0.1'
 
 ui_page('html/index.html')
