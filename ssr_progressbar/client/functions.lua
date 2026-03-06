@@ -71,6 +71,10 @@ function ProgressWithStartAndTick(action, start, tick, finish)
 	Process(action, start, tick, finish)
 end
 
+_G.isDoingAction = function()
+    return isDoingAction
+end
+
 function Process(action, start, tick, finish)
 	ActionStart()
     mythic_action = action
@@ -111,7 +115,7 @@ function Process(action, start, tick, finish)
                     end
 
                     if mythic_action.canCancel and isControlJustPressed(0, 178) then
-                        TriggerEvent("mythic_progbar:client:cancel")
+                        TriggerEvent("ssr_progressbar:client:cancel")
                         break
                     end
 
@@ -120,7 +124,7 @@ function Process(action, start, tick, finish)
                         if deathCheckTimer >= 150 then
                             deathCheckTimer = 0
                             if isEntityDead(playerPedId()) then
-                                TriggerEvent("mythic_progbar:client:cancel")
+                                TriggerEvent("ssr_progressbar:client:cancel")
                                 break
                             end
                         end

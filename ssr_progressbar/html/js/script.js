@@ -99,7 +99,7 @@ $('document').ready(function() {
 
                 setTimeout(function() {
                     $container.fadeOut('fast', function() {
-                        $.post('https://mythic_progbar/actionFinish', JSON.stringify({}));
+                        $.post(`https://${GetParentResourceName()}/actionFinish`, JSON.stringify({}));
                     });
                 }, 320);
             }
@@ -119,7 +119,7 @@ $('document').ready(function() {
                 lastFilledCount = -1;
                 lastActiveIndex = -1;
                 updateProgress(0);
-                $.post('https://mythic_progbar/actionCancel', JSON.stringify({}));
+                $.post(`https://${GetParentResourceName()}/actionCancel`, JSON.stringify({}));
             });
         }, 850);
     };
