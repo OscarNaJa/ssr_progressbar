@@ -25,6 +25,12 @@ end)
 
 RegisterNUICallback('actionFinish', function(data, cb)
 	Finish()
+	if cb then cb('ok') end
+end)
+
+RegisterNUICallback('actionCancel', function(data, cb)
+	Cancel()
+	if cb then cb('ok') end
 end)
 
 RegisterCommand('testprogbar', function()

@@ -1,7 +1,7 @@
 fx_version 'cerulean'
 game 'gta5'
 
-name 'Mythic Framework Progress Bar Modifier by TaerAttO'
+name 'ssr_progressbar'
 author 'Alzar - https://github.com/Alzar => modified by M. TaerAttO - https://github.com/MonsterTaerAttO/mythic_progbar'
 version '1.0.1'
 
