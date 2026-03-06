@@ -25,7 +25,8 @@ exports {
     'Progress',
     'ProgressWithStartEvent',
     'ProgressWithTickEvent',
-    'ProgressWithStartAndTick'
+    'ProgressWithStartAndTick',
+    'isDoingAction'
 }
 
 lua54 'yes'

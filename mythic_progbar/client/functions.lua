@@ -71,6 +71,10 @@ function ProgressWithStartAndTick(action, start, tick, finish)
 	Process(action, start, tick, finish)
 end
 
+_G.isDoingAction = function()
+    return isDoingAction
+end
+
 function Process(action, start, tick, finish)
 	ActionStart()
     mythic_action = action
